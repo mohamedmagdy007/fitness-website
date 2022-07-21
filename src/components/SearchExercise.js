@@ -1,14 +1,24 @@
-import React, { useEffect } from "react";
-import ScrollHorizontal from "./ScrollHorizontal";
-import { SearchIcon } from "./SVG/iconSvg";
-import { useSelector, useDispatch } from "react-redux";
-import { getexercise } from "../Store/Actions/Actions";
+import React, { useEffect, useState } from 'react';
+import ScrollHorizontal from './ScrollHorizontal';
+import { SearchIcon } from './SVG/iconSvg';
+import { useSelector, useDispatch } from 'react-redux';
+import { getexercise } from '../Store/Actions/Actions';
+import Exercises from './Exercises';
 const SearchExercise = () => {
-  //   const { bodyList } = useSelector((state) => state.exercises);
+  const { isLoading, exercises } = useSelector((state) => state.exercises);
+  const [search, setSearch] = useState('');
+  const [searchExercise, setSearchExercise] = useState('');
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getexercise());
   }, [dispatch]);
+  const SearchHandler = () => {
+    if (search) {
+      const searchExercise = exercises.filter((ex) => ex.includes(search));
+      setSearchExercise(searchExercise);
+      setSearch('');
+    }
+  };
   return (
     <div>
       <p className="text-5xl font-bold text-center mt-2">
@@ -26,14 +36,20 @@ const SearchExercise = () => {
             placeholder="Search exercises"
             type="text"
             name="search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
         </label>
-        <button className="bg-red-500 text-white py-2 px-5 rounded-md hover:bg-red-400">
+        <button
+          className="bg-red-500 text-white py-2 px-5 rounded-md hover:bg-red-400"
+          onClick={SearchHandler}
+        >
           Search
         </button>
       </div>
 
-      <ScrollHorizontal />
+      <ScrollHorizontal exercises={exercises} isLoading={isLoading} />
+      <Exercises searchExercise={searchExercise} exercises={exercises} />
     </div>
   );
 };

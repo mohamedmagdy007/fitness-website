@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getexercise } from "../Actions/Actions";
+import { createSlice } from '@reduxjs/toolkit';
+import { getexercise, getAllExercises } from '../Actions/Actions';
 const exerciseSlice = createSlice({
-  name: "exercise",
+  name: 'exercise',
   initialState: {
     exercises: [],
     isLoading: false,
@@ -15,12 +15,24 @@ const exerciseSlice = createSlice({
     },
     [getexercise.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.books = action.payload;
+      state.exercises = ['All', ...action.payload];
     },
     [getexercise.rejected]: (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     },
+  },
+  [getAllExercises.pending]: (state, action) => {
+    state.isLoading = true;
+    state.error = null;
+  },
+  [getAllExercises.fulfilled]: (state, action) => {
+    state.isLoading = false;
+    state.exercises = action.payload;
+  },
+  [getAllExercises.rejected]: (state, action) => {
+    state.isLoading = false;
+    state.error = action.payload;
   },
 });
 export default exerciseSlice.reducer;

@@ -1,7 +1,9 @@
-import { configureStore } from "@reduxjs/toolkit";
-import exerciseSlice from "./reducers/exerciseSlice";
+import { configureStore } from '@reduxjs/toolkit';
+import exercises from './reducers/exerciseSlice';
+import AllExercises from './reducers/getAllExerciseSlice';
 export default configureStore({
   reducer: {
-    exerciseSlice,
+    exercises,
+    AllExercises,
   },
 });
